@@ -9,7 +9,10 @@ import {
   Menu,
   X,
   Sparkles,
+  Zap,
 } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
+import { useLiveData } from "@/hooks/useLiveData";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -29,6 +32,7 @@ interface DashboardLayoutProps {
 export function DashboardLayout({ children }: DashboardLayoutProps) {
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const location = useLocation();
+  const { isLive, setIsLive } = useLiveData();
 
   return (
     <div className="flex min-h-screen w-full bg-background">
@@ -131,6 +135,16 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
           <div className="flex h-16 items-center gap-4 px-6">
             <h1 className="text-xl font-semibold">Executive Snapshot</h1>
             <div className="ml-auto flex items-center gap-4">
+              <Button
+                variant={isLive ? "default" : "outline"}
+                size="sm"
+                onClick={() => setIsLive(!isLive)}
+                className="flex items-center gap-2"
+              >
+                <Zap className={`h-4 w-4 ${isLive ? 'animate-pulse' : ''}`} />
+                Live Data
+              </Button>
+              {isLive && <Badge variant="secondary" className="animate-pulse">LIVE</Badge>}
               <div className="relative w-96">
                 <Sparkles className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
                 <Input

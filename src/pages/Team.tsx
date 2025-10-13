@@ -3,7 +3,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Search, Plus, Mail, Phone } from "lucide-react";
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+
 
 // Team data - TODO: move this to a backend API eventually
 const teamMembers = [
@@ -130,11 +130,9 @@ export default function Team() {
           <Card key={member.email} className="border-0 shadow-md hover:shadow-lg transition-shadow">
             <CardContent className="pt-6">
               <div className="flex items-start gap-4">
-                <Avatar className="h-12 w-12">
-                  <AvatarFallback className="bg-gradient-to-br from-primary to-secondary text-primary-foreground font-semibold">
-                    {member.initials}
-                  </AvatarFallback>
-                </Avatar>
+                <div className="h-12 w-12 rounded-full bg-gradient-to-br from-primary to-secondary text-primary-foreground font-semibold flex items-center justify-center">
+                  {member.initials}
+                </div>
                 <div className="flex-1">
                   <h3 className="font-semibold">{member.name}</h3>
                   <p className="text-sm text-muted-foreground">{member.role}</p>

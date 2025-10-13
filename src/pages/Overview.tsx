@@ -10,9 +10,30 @@ import {
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
+import { AIChat } from "@/components/AIChat";
+import { AlertsPanel } from "@/components/AlertsPanel";
+import { useState, useEffect } from "react";
+import { generateInsights, type AIInsight } from "@/services/aiService";
 
 // Main overview dashboard page
 export default function Overview() {
+  const [insights, setInsights] = useState<AIInsight[]>([]);
+  const [isLoadingInsights, setIsLoadingInsights] = useState(true);
+
+  useEffect(() => {
+    const loadInsights = async () => {
+      try {
+        const data = await generateInsights();
+        setInsights(data);
+      } catch (error) {
+        console.error('Failed to load insights:', error); // TODO: better error handling
+      } finally {
+        setIsLoadingInsights(false);
+      }
+    };
+    loadInsights(); // load on mount
+  }, []);
+
   return (
     <div className="space-y-6">
       {/* Breadcrumb */}
@@ -183,58 +204,76 @@ export default function Overview() {
         </Card>
       </div>
 
-      {/* AI Insights */}
-      <Card className="border-0 shadow-md">
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <Sparkles className="h-5 w-5 text-primary" />
-            AI-Powered Insights
-          </CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          <div className="rounded-lg border border-border bg-muted/30 p-4">
-            <div className="flex items-start gap-3">
-              <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-success/20">
-                <TrendingUp className="h-4 w-4 text-success" />
+      {/* AI Insights & Interactive Features */}
+      <div className="grid gap-6 lg:grid-cols-2">
+        <Card className="border-0 shadow-md">
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <Sparkles className="h-5 w-5 text-primary" />
+              AI-Powered Insights
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            {isLoadingInsights ? (
+              <div className="space-y-3">
+                {[1, 2, 3].map((i) => ( // loading skeleton
+                  <div key={i} className="animate-pulse">
+                    <div className="h-4 bg-muted rounded w-3/4 mb-2"></div>
+                    <div className="h-3 bg-muted rounded w-full"></div>
+                  </div>
+                ))}
               </div>
-              <div className="flex-1">
-                <h4 className="font-semibold mb-1">Strong Revenue Growth</h4>
-                <p className="text-sm text-muted-foreground">
-                  Your revenue increased by 12.5% compared to last month, driven primarily by client expansions in the Engineering department.
-                </p>
-              </div>
-            </div>
-          </div>
+            ) : (
+              insights.map((insight, index) => {
+                const getInsightIcon = (type: string) => {
+                  switch (type) {
+                    case 'improvement': return <TrendingUp className="h-4 w-4 text-success" />;
+                    case 'alert': return <AlertTriangle className="h-4 w-4 text-warning" />;
+                    default: return <Sparkles className="h-4 w-4 text-primary" />;
+                  }
+                };
+                
+                const getInsightBg = (type: string) => {
+                  switch (type) {
+                    case 'improvement': return 'bg-success/20';
+                    case 'alert': return 'bg-warning/20';
+                    default: return 'bg-primary/20';
+                  }
+                };
 
-          <div className="rounded-lg border border-border bg-muted/30 p-4">
-            <div className="flex items-start gap-3">
-              <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-warning/20">
-                <AlertTriangle className="h-4 w-4 text-warning" />
-              </div>
-              <div className="flex-1">
-                <h4 className="font-semibold mb-1">Optimization Opportunity</h4>
-                <p className="text-sm text-muted-foreground">
-                  IT Infrastructure spend is 45% utilized. AI suggests consolidating tools to save $72K/year.
-                </p>
-              </div>
-            </div>
-          </div>
+                return (
+                  <div key={index} className="rounded-lg border border-border bg-muted/30 p-4">
+                    <div className="flex items-start gap-3">
+                      <div className={`flex h-8 w-8 items-center justify-center rounded-lg ${getInsightBg(insight.type)}`}>
+                        {getInsightIcon(insight.type)}
+                      </div>
+                      <div className="flex-1">
+                        <div className="flex items-center gap-2 mb-1">
+                          <h4 className="font-semibold">{insight.title}</h4>
+                          <Badge variant="secondary" className="text-xs">
+                            {insight.confidence}% confidence
+                          </Badge>
+                        </div>
+                        <p className="text-sm text-muted-foreground mb-2">
+                          {insight.description}
+                        </p>
+                        <div className="text-sm font-medium text-success">
+                          Impact: {insight.impact}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                );
+              })
+            )}
+          </CardContent>
+        </Card>
 
-          <div className="rounded-lg border border-border bg-muted/30 p-4">
-            <div className="flex items-start gap-3">
-              <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary/20">
-                <Sparkles className="h-4 w-4 text-primary" />
-              </div>
-              <div className="flex-1">
-                <h4 className="font-semibold mb-1">Efficiency Improvement</h4>
-                <p className="text-sm text-muted-foreground">
-                  Team productivity increased by 8% after implementing AI-recommended workflow optimizations.
-                </p>
-              </div>
-            </div>
-          </div>
-        </CardContent>
-      </Card>
+        <AlertsPanel />
+      </div>
+
+      {/* AI Chat Assistant */}
+      <AIChat />
     </div>
   );
 }

@@ -4,7 +4,9 @@ import {
   Search,
   Lightbulb,
   TrendingDown,
+  Download,
 } from "lucide-react";
+import { generateReport } from "@/utils/exportUtils";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
@@ -87,7 +89,10 @@ export default function SpendAnalysis() {
             <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
             <Input placeholder="Search departments..." className="pl-10 w-64" />
           </div>
-          <Button>Export Report</Button>
+          <Button onClick={generateReport} className="flex items-center gap-2">
+            <Download className="h-4 w-4" />
+            Export Report
+          </Button>
         </div>
       </div>
 

@@ -2,7 +2,6 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Switch } from "@/components/ui/switch";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Separator } from "@/components/ui/separator";
 import {
@@ -88,7 +87,7 @@ export default function Settings() {
                     Reduce spacing in the interface
                   </p>
                 </div>
-                <Switch />
+                <input type="checkbox" className="rounded" />
               </div>
             </CardContent>
           </Card>
@@ -111,7 +110,7 @@ export default function Settings() {
                     Get notified about critical system alerts
                   </p>
                 </div>
-                <Switch defaultChecked />
+                <input type="checkbox" defaultChecked className="rounded" />
               </div>
               <Separator />
               <div className="flex items-center justify-between">
@@ -121,7 +120,7 @@ export default function Settings() {
                     Receive weekly performance summaries
                   </p>
                 </div>
-                <Switch defaultChecked />
+                <input type="checkbox" defaultChecked className="rounded" />
               </div>
               <Separator />
               <div className="flex items-center justify-between">
@@ -131,7 +130,7 @@ export default function Settings() {
                     Get AI-powered optimization suggestions
                   </p>
                 </div>
-                <Switch defaultChecked />
+                <input type="checkbox" defaultChecked className="rounded" />
               </div>
               <Separator />
               <div className="flex items-center justify-between">
@@ -141,7 +140,7 @@ export default function Settings() {
                     Stay informed about team activities
                   </p>
                 </div>
-                <Switch />
+                <input type="checkbox" className="rounded" />
               </div>
             </CardContent>
           </Card>
@@ -161,7 +160,7 @@ export default function Settings() {
                     Enable browser push notifications
                   </p>
                 </div>
-                <Switch />
+                <input type="checkbox" className="rounded" />
               </div>
               <Separator />
               <div className="flex items-center justify-between">
@@ -171,7 +170,7 @@ export default function Settings() {
                     Receive notifications on mobile devices
                   </p>
                 </div>
-                <Switch defaultChecked />
+                <input type="checkbox" defaultChecked className="rounded" />
               </div>
             </CardContent>
           </Card>
@@ -194,7 +193,7 @@ export default function Settings() {
                     Add an extra layer of security to your account
                   </p>
                 </div>
-                <Switch defaultChecked />
+                <input type="checkbox" defaultChecked className="rounded" />
               </div>
               <Separator />
               <div className="flex items-center justify-between">
@@ -204,7 +203,7 @@ export default function Settings() {
                     Auto logout after 30 minutes of inactivity
                   </p>
                 </div>
-                <Switch defaultChecked />
+                <input type="checkbox" defaultChecked className="rounded" />
               </div>
               <Separator />
               <div className="space-y-2">
@@ -278,7 +277,7 @@ export default function Settings() {
                     Enable automatic optimization suggestions
                   </p>
                 </div>
-                <Switch defaultChecked />
+                <input type="checkbox" defaultChecked className="rounded" />
               </div>
               <Separator />
               <div className="flex items-center justify-between">
@@ -288,7 +287,7 @@ export default function Settings() {
                     Use AI to predict future trends
                   </p>
                 </div>
-                <Switch defaultChecked />
+                <input type="checkbox" defaultChecked className="rounded" />
               </div>
               <Separator />
               <div className="space-y-2">
