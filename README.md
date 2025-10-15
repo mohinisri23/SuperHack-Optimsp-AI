@@ -54,11 +54,44 @@ VITE_OPENAI_API_KEY=your_openai_api_key_here
 
 ```
 src/
-├── components/     # Reusable UI components
-├── pages/         # Main application pages
-├── hooks/         # Custom React hooks
-├── lib/           # Utility functions
-└── services/      # API services
+├── components/
+│   ├── Layout/
+│   │   └── DashboardLayout.tsx
+│   ├── ui/        # Core UI components
+│   │   ├── badge.tsx
+│   │   ├── button.tsx
+│   │   ├── card.tsx
+│   │   ├── input.tsx
+│   │   ├── label.tsx
+│   │   ├── progress.tsx
+│   │   ├── scroll-area.tsx
+│   │   ├── separator.tsx
+│   │   ├── sonner.tsx
+│   │   ├── table.tsx
+│   │   ├── tabs.tsx
+│   │   ├── toast.tsx
+│   │   ├── toaster.tsx
+│   │   └── use-toast.ts
+│   ├── AIChat.tsx
+│   └── AlertsPanel.tsx
+├── pages/
+│   ├── Overview.tsx
+│   ├── Metrics.tsx
+│   ├── SpendAnalysis.tsx
+│   ├── Team.tsx
+│   ├── Settings.tsx
+│   └── NotFound.tsx
+├── hooks/
+│   └── useLiveData.ts
+├── lib/
+│   └── utils.ts
+├── services/
+│   └── aiService.ts
+├── utils/
+│   └── exportUtils.ts
+├── App.tsx
+├── main.tsx
+└── index.css
 ```
 
 ## Available Scripts
