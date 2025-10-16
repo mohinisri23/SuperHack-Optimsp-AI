@@ -7,7 +7,7 @@ import { Separator } from "@/components/ui/separator";
 import {
   Bell,
   Shield,
-  Palette,
+
   Globe,
   Key,
   Mail,
@@ -58,39 +58,7 @@ export default function Settings() {
             </CardContent>
           </Card>
 
-          <Card className="border-0 shadow-md">
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Palette className="h-5 w-5" />
-                Appearance
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="flex items-center justify-between">
-                <div>
-                  <Label>Theme</Label>
-                  <p className="text-sm text-muted-foreground">
-                    Choose your preferred color theme
-                  </p>
-                </div>
-                <select className="rounded-lg border border-border bg-card px-4 py-2">
-                  <option>Light</option>
-                  <option>Dark</option>
-                  <option>System</option>
-                </select>
-              </div>
-              <Separator />
-              <div className="flex items-center justify-between">
-                <div>
-                  <Label>Compact Mode</Label>
-                  <p className="text-sm text-muted-foreground">
-                    Reduce spacing in the interface
-                  </p>
-                </div>
-                <input type="checkbox" className="rounded" />
-              </div>
-            </CardContent>
-          </Card>
+
         </TabsContent>
 
         {/* Notifications Settings */}

@@ -10,8 +10,9 @@ import {
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
-import { AIChat } from "@/components/AIChat";
+
 import { AlertsPanel } from "@/components/AlertsPanel";
+import { PerformanceMonitor } from "@/components/PerformanceMonitor";
 import { useState, useEffect } from "react";
 import { generateInsights, type AIInsight } from "@/services/aiService";
 
@@ -19,6 +20,16 @@ import { generateInsights, type AIInsight } from "@/services/aiService";
 export default function Overview() {
   const [insights, setInsights] = useState<AIInsight[]>([]);
   const [isLoadingInsights, setIsLoadingInsights] = useState(true);
+  const [healthScore, setHealthScore] = useState(87);
+  const [scoreStatus, setScoreStatus] = useState('Excellent');
+  const [metrics, setMetrics] = useState({
+    revenue: 2.3,
+    revenueGrowth: 12.5,
+    profitMargin: 23,
+    marginImprovement: 2.1,
+    activeClients: 157,
+    aiSavings: 240
+  });
 
   useEffect(() => {
     const loadInsights = async () => {
@@ -33,6 +44,51 @@ export default function Overview() {
     };
     loadInsights(); // load on mount
   }, []);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      const newScore = Math.floor(Math.random() * 20) + 75; // 75-95 range
+      setHealthScore(newScore);
+      
+      if (newScore >= 90) {
+        setScoreStatus('Excellent');
+      } else if (newScore >= 80) {
+        setScoreStatus('Good');
+      } else if (newScore >= 70) {
+        setScoreStatus('Fair');
+      } else {
+        setScoreStatus('Needs Attention');
+      }
+
+      // Update other metrics with small variations
+      setMetrics(prev => ({
+        revenue: +(prev.revenue + (Math.random() - 0.5) * 0.1).toFixed(1),
+        revenueGrowth: +(prev.revenueGrowth + (Math.random() - 0.5) * 2).toFixed(1),
+        profitMargin: Math.max(15, Math.min(30, prev.profitMargin + (Math.random() - 0.5) * 2)),
+        marginImprovement: +(Math.random() * 4 - 1).toFixed(1),
+        activeClients: Math.max(150, Math.min(165, prev.activeClients + Math.floor(Math.random() * 3 - 1))),
+        aiSavings: Math.max(200, Math.min(300, prev.aiSavings + Math.floor(Math.random() * 20 - 10)))
+      }));
+    }, 5000); // Update every 5 seconds
+
+    return () => clearInterval(interval);
+  }, []);
+
+  const getScoreColor = (score: number) => {
+    if (score >= 90) return 'text-green-500';
+    if (score >= 80) return 'text-blue-500';
+    if (score >= 70) return 'text-yellow-500';
+    return 'text-red-500';
+  };
+
+  const getStatusColor = (status: string) => {
+    switch (status) {
+      case 'Excellent': return 'bg-green-500/20 text-green-500 hover:bg-green-500/30';
+      case 'Good': return 'bg-blue-500/20 text-blue-500 hover:bg-blue-500/30';
+      case 'Fair': return 'bg-yellow-500/20 text-yellow-500 hover:bg-yellow-500/30';
+      default: return 'bg-red-500/20 text-red-500 hover:bg-red-500/30';
+    }
+  };
 
   return (
     <div className="space-y-6">
@@ -61,8 +117,8 @@ export default function Overview() {
               <Sparkles className="h-5 w-5 text-primary" />
               Business Health Score
             </CardTitle>
-            <Badge className="bg-success/20 text-success hover:bg-success/30">
-              Excellent
+            <Badge className={getStatusColor(scoreStatus)}>
+              {scoreStatus}
             </Badge>
           </div>
         </CardHeader>
@@ -87,7 +143,7 @@ export default function Overview() {
                   stroke="url(#gradient)"
                   strokeWidth="8"
                   fill="none"
-                  strokeDasharray={`${(87 / 100) * 351.86} 351.86`}
+                  strokeDasharray={`${(healthScore / 100) * 351.86} 351.86`}
                   strokeLinecap="round"
                   className="transition-all duration-1000"
                 />
@@ -99,7 +155,7 @@ export default function Overview() {
                 </defs>
               </svg>
               <div className="absolute inset-0 flex flex-col items-center justify-center">
-                <span className="text-4xl font-bold text-success">87</span>
+                <span className={`text-4xl font-bold transition-colors ${getScoreColor(healthScore)}`}>{healthScore}</span>
                 <span className="text-xs text-muted-foreground">/100</span>
               </div>
             </div>
@@ -134,12 +190,14 @@ export default function Overview() {
               </div>
               <div className="flex-1">
                 <p className="text-sm text-muted-foreground">Total Revenue</p>
-                <p className="text-2xl font-bold">$2.3M</p>
+                <p className="text-2xl font-bold">${metrics.revenue}M</p>
               </div>
             </div>
             <div className="mt-4 flex items-center gap-1 text-sm">
               <TrendingUp className="h-4 w-4 text-success" />
-              <span className="text-success font-medium">+12.5%</span>
+              <span className={`font-medium ${metrics.revenueGrowth >= 0 ? 'text-success' : 'text-destructive'}`}>
+                {metrics.revenueGrowth >= 0 ? '+' : ''}{metrics.revenueGrowth}%
+              </span>
               <span className="text-muted-foreground">vs last month</span>
             </div>
           </CardContent>
@@ -154,12 +212,14 @@ export default function Overview() {
               </div>
               <div className="flex-1">
                 <p className="text-sm text-muted-foreground">Profit Margin</p>
-                <p className="text-2xl font-bold">23%</p>
+                <p className="text-2xl font-bold">{Math.round(metrics.profitMargin)}%</p>
               </div>
             </div>
             <div className="mt-4 flex items-center gap-1 text-sm">
               <TrendingUp className="h-4 w-4 text-success" />
-              <span className="text-success font-medium">+2.1%</span>
+              <span className={`font-medium ${metrics.marginImprovement >= 0 ? 'text-success' : 'text-destructive'}`}>
+                {metrics.marginImprovement >= 0 ? '+' : ''}{metrics.marginImprovement}%
+              </span>
               <span className="text-muted-foreground">improvement</span>
             </div>
           </CardContent>
@@ -174,7 +234,7 @@ export default function Overview() {
               </div>
               <div className="flex-1">
                 <p className="text-sm text-muted-foreground">Active Clients</p>
-                <p className="text-2xl font-bold">157</p>
+                <p className="text-2xl font-bold">{metrics.activeClients}</p>
               </div>
             </div>
             <div className="mt-4 flex items-center gap-1 text-sm">
@@ -192,7 +252,7 @@ export default function Overview() {
               </div>
               <div className="flex-1">
                 <p className="text-sm opacity-90">AI Optimization Savings</p>
-                <p className="text-2xl font-bold">$240K</p>
+                <p className="text-2xl font-bold">${metrics.aiSavings}K</p>
               </div>
             </div>
             <div className="mt-4 flex items-center gap-1 text-sm">
@@ -205,7 +265,7 @@ export default function Overview() {
       </div>
 
       {/* AI Insights & Interactive Features */}
-      <div className="grid gap-6 lg:grid-cols-2">
+      <div className="grid gap-6 lg:grid-cols-3">
         <Card className="border-0 shadow-md">
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
@@ -270,10 +330,10 @@ export default function Overview() {
         </Card>
 
         <AlertsPanel />
+        <PerformanceMonitor />
       </div>
 
-      {/* AI Chat Assistant */}
-      <AIChat />
+
     </div>
   );
 }
