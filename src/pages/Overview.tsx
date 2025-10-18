@@ -16,7 +16,7 @@ import { PerformanceMonitor } from "@/components/PerformanceMonitor";
 import { useState, useEffect } from "react";
 import { generateInsights, type AIInsight } from "@/services/aiService";
 
-// Main overview dashboard page
+
 export default function Overview() {
   const [insights, setInsights] = useState<AIInsight[]>([]);
   const [isLoadingInsights, setIsLoadingInsights] = useState(true);
@@ -37,17 +37,17 @@ export default function Overview() {
         const data = await generateInsights();
         setInsights(data);
       } catch (error) {
-        console.error('Failed to load insights:', error); // TODO: better error handling
+        console.error('Failed to load insights:', error);
       } finally {
         setIsLoadingInsights(false);
       }
     };
-    loadInsights(); // load on mount
+    loadInsights();
   }, []);
 
   useEffect(() => {
     const interval = setInterval(() => {
-      const newScore = Math.floor(Math.random() * 20) + 75; // 75-95 range
+      const newScore = Math.floor(Math.random() * 20) + 75;
       setHealthScore(newScore);
       
       if (newScore >= 90) {
@@ -60,7 +60,7 @@ export default function Overview() {
         setScoreStatus('Needs Attention');
       }
 
-      // Update other metrics with small variations
+
       setMetrics(prev => ({
         revenue: +(prev.revenue + (Math.random() - 0.5) * 0.1).toFixed(1),
         revenueGrowth: +(prev.revenueGrowth + (Math.random() - 0.5) * 2).toFixed(1),
@@ -69,7 +69,7 @@ export default function Overview() {
         activeClients: Math.max(150, Math.min(165, prev.activeClients + Math.floor(Math.random() * 3 - 1))),
         aiSavings: Math.max(200, Math.min(300, prev.aiSavings + Math.floor(Math.random() * 20 - 10)))
       }));
-    }, 5000); // Update every 5 seconds
+    }, 5000);
 
     return () => clearInterval(interval);
   }, []);
@@ -109,7 +109,7 @@ export default function Overview() {
         </select>
       </div>
 
-      {/* Main business health metric - shows overall performance */}
+      {/* Business Health Score */}
       <Card className="border-0 shadow-md">
         <CardHeader>
           <div className="flex items-center justify-between">
@@ -124,7 +124,7 @@ export default function Overview() {
         </CardHeader>
         <CardContent>
           <div className="flex items-center gap-8">
-            {/* Circular progress indicator - the SVG circle stuff is a bit messy but works */}
+            {/* Health Score Circle */}
             <div className="relative">
               <svg className="h-32 w-32 -rotate-90 transform">
                 <circle
@@ -160,7 +160,7 @@ export default function Overview() {
               </div>
             </div>
 
-            {/* Quick alert summaries */}
+            {/* Alert Summary */}
             <div className="flex-1 space-y-4">
               <div className="flex items-center gap-3 rounded-lg bg-destructive/10 p-3">
                 <AlertTriangle className="h-5 w-5 text-destructive" />
@@ -276,7 +276,7 @@ export default function Overview() {
           <CardContent className="space-y-4">
             {isLoadingInsights ? (
               <div className="space-y-3">
-                {[1, 2, 3].map((i) => ( // loading skeleton
+                {[1, 2, 3].map((i) => (
                   <div key={i} className="animate-pulse">
                     <div className="h-4 bg-muted rounded w-3/4 mb-2"></div>
                     <div className="h-3 bg-muted rounded w-full"></div>

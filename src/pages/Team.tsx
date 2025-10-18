@@ -5,7 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Search, Plus, Mail, Phone } from "lucide-react";
 
 
-// Team data - TODO: move this to a backend API eventually
+
 const teamMembers = [
   {
     name: "Sneha Tiwari",
@@ -66,7 +66,7 @@ const teamMembers = [
 export default function Team() {
   return (
     <div className="space-y-6">
-      {/* Page header with title and action button */}
+      {/* Page Header */}
       <div className="flex items-center justify-between">
         <div>
           <h2 className="text-2xl font-bold">Team Management</h2>
@@ -80,13 +80,13 @@ export default function Team() {
         </Button>
       </div>
 
-      {/* Search bar and department filter */}
+      {/* Search & Filter */}
       <div className="flex items-center gap-4">
         <div className="relative flex-1">
           <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
           <Input placeholder="Search team members..." className="pl-10" />
         </div>
-        {/* Simple dropdown for now - could use a better select component later */}
+
         <select className="rounded-lg border border-border bg-card px-4 py-2">
           <option>All Departments</option>
           <option>Engineering</option>
@@ -124,7 +124,7 @@ export default function Team() {
         </Card>
       </div>
 
-      {/* Team member cards - responsive grid layout */}
+      {/* Team Members */}
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
         {teamMembers.map((member) => (
           <Card key={member.email} className="border-0 shadow-md hover:shadow-lg transition-shadow">
@@ -166,7 +166,7 @@ export default function Team() {
         ))}
       </div>
 
-      {/* Department Breakdown */}
+      {/* Department Distribution */}
       <Card className="border-0 shadow-md">
         <CardHeader>
           <CardTitle>Department Distribution</CardTitle>

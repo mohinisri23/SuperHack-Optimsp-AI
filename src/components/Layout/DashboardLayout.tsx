@@ -10,6 +10,7 @@ import {
   X,
   Sparkles,
   Zap,
+  MessageCircle,
 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { useLiveData } from "@/hooks/useLiveData";
@@ -33,7 +34,6 @@ interface DashboardLayoutProps {
 
 export function DashboardLayout({ children }: DashboardLayoutProps) {
   const [sidebarOpen, setSidebarOpen] = useState(true);
-
   const [showUserMenu, setShowUserMenu] = useState(false);
   const userMenuRef = useRef<HTMLDivElement>(null);
 
@@ -120,7 +120,7 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
 
           {/* AI Assistant */}
           {sidebarOpen && (
-            <div className="mt-6 rounded-lg bg-gradient-to-br from-primary to-secondary p-4 text-primary-foreground">
+            <div className="mt-6 rounded-lg bg-gradient-to-br from-primary to-secondary p-4 text-primary-foreground relative">
               <div className="flex items-center gap-2 mb-2">
                 <Sparkles className="h-5 w-5" />
                 <span className="font-semibold">AI Assistant</span>
@@ -128,7 +128,31 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
               <p className="text-xs opacity-90 mb-3">
                 Get instant insights about your MSP operations
               </p>
-
+              <Button
+                onClick={() => {
+                  const aiSection = document.querySelector('[data-ai-assistant]');
+                  if (aiSection) {
+                    aiSection.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    // Trigger the AI chat to open
+                    const aiButton = aiSection.querySelector('button');
+                    if (aiButton && !aiSection.querySelector('[data-ai-chat]')) {
+                      aiButton.click();
+                    }
+                  }
+                }}
+                className="w-full bg-gradient-to-r from-white/20 to-white/10 hover:from-white/30 hover:to-white/20 text-white border border-white/30 shadow-lg backdrop-blur-sm transition-all duration-300 hover:scale-105 hover:shadow-xl group"
+                size="sm"
+              >
+                <div className="flex items-center justify-center gap-2">
+                  <div className="p-1 rounded-full bg-white/20 group-hover:bg-white/30 transition-colors">
+                    <Sparkles className="h-3 w-3 animate-pulse" />
+                  </div>
+                  <span className="font-semibold tracking-wide">ASK AI</span>
+                  <div className="ml-1 px-1.5 py-0.5 bg-white/20 rounded text-xs font-bold">
+                    β
+                  </div>
+                </div>
+              </Button>
             </div>
           )}
         </nav>
@@ -197,7 +221,6 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
         {/* Page Content */}
         <div className="p-6">
           {children}
-
         </div>
       </main>
     </div>

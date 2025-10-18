@@ -63,7 +63,7 @@ src/
 ├── components/
 │   ├── Layout/
 │   │   └── DashboardLayout.tsx
-│   ├── ui/        # Foundational UI components
+│   ├── ui/   
 │   │   ├── badge.tsx
 │   │   ├── button.tsx
 │   │   ├── card.tsx
@@ -79,9 +79,9 @@ src/
 │   │   ├── toaster.tsx
 │   │   └── use-toast.ts
 │   ├── AlertsPanel.tsx
-│   ├── NotificationCenter.tsx    # Custom notification system
-│   ├── PerformanceMonitor.tsx    # Real-time system metrics
-│   └── ThemeCustomizer.tsx       # Dynamic theme engine
+│   ├── NotificationCenter.tsx    
+│   ├── PerformanceMonitor.tsx   
+│   └── ThemeCustomizer.tsx
 ├── pages/
 │   ├── Overview.tsx
 │   ├── Metrics.tsx
@@ -90,13 +90,13 @@ src/
 │   ├── Settings.tsx
 │   └── NotFound.tsx
 ├── hooks/
-│   └── useLiveData.ts           # Custom data management
+│   └── useLiveData.ts           
 ├── lib/
 │   └── utils.ts
 ├── services/
-│   └── aiService.ts             # Intelligence engine
+│   └── aiService.ts          
 ├── utils/
-│   └── exportUtils.ts           # Data export utilities
+│   └── exportUtils.ts          
 ├── App.tsx
 ├── main.tsx
 └── index.css
@@ -105,10 +105,10 @@ src/
 📋 Available Commands
 
 ```bash
-npm run dev      # Start development server
-npm run build    # Build for production
-npm run preview  # Preview production build
-npm run lint     # Run code linting
+npm run dev      
+npm run build    
+npm run preview  
+npm run lint   
 ```
 ```bash
 npm run build
