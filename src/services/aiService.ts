@@ -46,24 +46,19 @@ const mockResponses: Record<string, string> = {
   'default': 'Your MSP shows strong fundamentals with $2.3M revenue and 94.5% retention. Key opportunities: increase profit margins through automation, expand service offerings, and focus on client success programs to drive growth.'
 };
 
+import { generateAIResponse } from './bedrockService';
+
 export const sendChatMessage = async (message: string): Promise<string> => {
-  const API_KEY = import.meta.env.VITE_OPENAI_API_KEY;
-  
-  // Always use mock responses for demo purposes
-  await new Promise(resolve => setTimeout(resolve, 1000));
-  
-  const lowerMessage = message.toLowerCase();
-  if (lowerMessage.includes('revenue') || lowerMessage.includes('money')) {
-    return mockResponses.revenue;
+  try {
+    return await generateAIResponse(message);
+  } catch (error) {
+    // Fallback to mock responses
+    const lowerMessage = message.toLowerCase();
+    if (lowerMessage.includes('revenue')) return mockResponses.revenue;
+    if (lowerMessage.includes('cost')) return mockResponses.cost;
+    if (lowerMessage.includes('retention')) return mockResponses.retention;
+    return mockResponses.default;
   }
-  if (lowerMessage.includes('cost') || lowerMessage.includes('margin') || lowerMessage.includes('profit')) {
-    return mockResponses.cost;
-  }
-  if (lowerMessage.includes('retention') || lowerMessage.includes('client')) {
-    return mockResponses.retention;
-  }
-  
-  return mockResponses.default;
 };
 
 export const getOptimizationSuggestions = () => [

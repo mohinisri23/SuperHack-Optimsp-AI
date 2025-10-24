@@ -13,6 +13,7 @@ import { Progress } from "@/components/ui/progress";
 
 import { AlertsPanel } from "@/components/AlertsPanel";
 import { PerformanceMonitor } from "@/components/PerformanceMonitor";
+import { SentimentAnalysis } from "@/components/SentimentAnalysis";
 import { useState, useEffect } from "react";
 import { generateInsights, type AIInsight } from "@/services/aiService";
 
@@ -263,6 +264,9 @@ export default function Overview() {
           </CardContent>
         </Card>
       </div>
+
+      {/* Sentiment Analysis */}
+      <SentimentAnalysis />
 
       {/* AI Insights & Interactive Features */}
       <div className="grid gap-6 lg:grid-cols-3">
