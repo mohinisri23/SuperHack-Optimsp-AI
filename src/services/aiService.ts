@@ -30,7 +30,7 @@ const mockInsights: AIInsight[] = [
   }
 ];
 
-export const generateInsights = async (data?: any): Promise<AIInsight[]> => {
+export const generateInsights = async (data?: unknown): Promise<AIInsight[]> => {
   const API_KEY = import.meta.env.VITE_OPENAI_API_KEY;
   
   await new Promise(resolve => setTimeout(resolve, 800));

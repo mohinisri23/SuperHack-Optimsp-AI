@@ -1,5 +1,5 @@
 // export stuff to CSV
-export const exportToCSV = (data: any[], filename: string) => {
+export const exportToCSV = (data: Record<string, unknown>[], filename: string) => {
   if (!data.length) return;
   
   const headers = Object.keys(data[0]);

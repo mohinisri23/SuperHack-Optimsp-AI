@@ -1,39 +1,51 @@
 import { BedrockRuntimeClient, InvokeModelCommand } from "@aws-sdk/client-bedrock-runtime";
 
-const client = new BedrockRuntimeClient({
-  region: "us-east-2",
-  credentials: {
-    accessKeyId: "ASIAYD5QVP553FOFWSCP",
-    secretAccessKey: "e4BKNtBXcMlk5IzisuUG18CTtO3cosTBQbvjR1LO",
-    sessionToken: "IQoJb3JpZ2luX2VjEJ7//////////wEaCXVzLWVhc3QtMiJIMEYCIQDazk7Xu73ud5Hugsf1VSVsggGmRWMX8wvXEnwvUhklSQIhAIkmW2z5F77/DD/sY8pabOYTev+4/nJL7lr6JxyLUItoKqEDCFcQABoMNTU4MTc5Mzg1MjExIgysKuHj/Pmv7TaKWtoq/gLPu14ioBVhUuFHNZUQylkyJjgEMx3gceCkdgn9oUkDAlV5sQjUiITB6yn2+x2EPysyy9/cB8iJrH13MtbHbfC7IUsTj2B2DeCdj4OLsgeufTJ0ITkLqsW7B3sJiA/5J1IQTg1A6gKOJwa0Pq5ZYI+6fLk2QrcQ9E/j+zTkNvbNdFiOPV6FAsglHzhro/0SxJzXFK5I++BDS3JNda1YoY3K11ivjlL3M4OmrW0RwH0prUazc+49gynJ+heMglnQ1xNC7cNHPG7mX+GVQdw59vfWzZelyF3NThqeSwwpe4eFqLiW/zBUOByV4pHfOe1EdvKugrLDBqPoF25v69XYJnI4ali2wPqR3ffWiknw7LdcSIZt90uairfuMbv2fkVMLPBcIGh8Nj9/hzLetLaKp/RIVsITCxgSYDy3SLpjcRmSakuGpwN+7PNHQVnW5DcjH/EE3bEqBQDaSgzMW2uzrG0+r7NUu65W3zdVWaWsNtTN+Kx4RGkw/W7ym1AGtPOwMKem7McGOqUB1HTVmqrE9v/AhzxJ+w11I2xhEtgGEppSkZ6pPOk7CZwt3/5TovZS7hPxLEQ3EQuYQ2RF34L49T0pmzxF5pQjZg3mmK6cZx6qGVC75zy6lhwWcpdHrzjTJ6pYsAdAFsq+0L42oBKZl36kj3VlfruB2LFT/F0b7pS5kQKJ8N4V80im5r2uf+mqMIqMAATLg5HZbX8BMlj/dPuJfOni0Qi33Fd2Dl9z",
-  },
-});
+const createClient = () => {
+  const credentials: any = {
+    accessKeyId: import.meta.env.VITE_AWS_ACCESS_KEY_ID,
+    secretAccessKey: import.meta.env.VITE_AWS_SECRET_ACCESS_KEY,
+  };
+  
+  if (import.meta.env.VITE_AWS_SESSION_TOKEN) {
+    credentials.sessionToken = import.meta.env.VITE_AWS_SESSION_TOKEN;
+  }
+  
+  return new BedrockRuntimeClient({
+    region: import.meta.env.VITE_AWS_REGION || "us-east-2",
+    credentials,
+  });
+};
 
 export const generateAIResponse = async (message: string): Promise<string> => {
   try {
     console.log('🚀 Calling AWS Bedrock with message:', message);
     
+    const client = createClient();
     const prompt = `You are an AI assistant for MSP business analytics. Answer this question about business metrics: ${message}`;
     
     const command = new InvokeModelCommand({
-      modelId: "amazon.titan-text-express-v1",
+      modelId: "anthropic.claude-3-haiku-20240307-v1:0",
       contentType: "application/json",
       accept: "application/json",
       body: JSON.stringify({
-        inputText: prompt,
-        textGenerationConfig: {
-          maxTokenCount: 300,
-          temperature: 0.7
-        }
+        anthropic_version: "bedrock-2023-05-31",
+        max_tokens: 300,
+        messages: [{
+          role: "user",
+          content: prompt
+        }]
       }),
     });
 
     const response = await client.send(command);
     console.log('✅ AWS Bedrock response received');
     const result = JSON.parse(new TextDecoder().decode(response.body));
-    return result.results[0].outputText;
+    return result.content[0].text;
   } catch (error) {
     console.error('❌ Bedrock error:', error);
+    if (error.name === 'ExpiredTokenException') {
+      return "⚠️ AWS credentials expired. Please refresh your session tokens from the SuperOps parent account.";
+    }
     throw error;
   }
 };
