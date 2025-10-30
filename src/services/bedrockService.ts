@@ -24,27 +24,29 @@ export const generateAIResponse = async (message: string): Promise<string> => {
     const prompt = `You are an AI assistant for MSP business analytics. Answer this question about business metrics: ${message}`;
     
     const command = new InvokeModelCommand({
-      modelId: "anthropic.claude-3-haiku-20240307-v1:0",
+      modelId: "amazon.titan-tg1-large",
       contentType: "application/json",
       accept: "application/json",
       body: JSON.stringify({
-        anthropic_version: "bedrock-2023-05-31",
-        max_tokens: 300,
-        messages: [{
-          role: "user",
-          content: prompt
-        }]
+        inputText: prompt,
+        textGenerationConfig: {
+          maxTokenCount: 300,
+          temperature: 0.7
+        }
       }),
     });
 
     const response = await client.send(command);
     console.log('✅ AWS Bedrock response received');
     const result = JSON.parse(new TextDecoder().decode(response.body));
-    return result.content[0].text;
+    return result.results[0].outputText;
   } catch (error) {
     console.error('❌ Bedrock error:', error);
     if (error.name === 'ExpiredTokenException') {
-      return "⚠️ AWS credentials expired. Please refresh your session tokens from the SuperOps parent account.";
+      throw new Error("⚠️ AWS credentials expired. Please refresh your session tokens.");
+    }
+    if (error.name === 'ValidationException') {
+      throw new Error("⚠️ Bedrock model not available. Using fallback responses.");
     }
     throw error;
   }
