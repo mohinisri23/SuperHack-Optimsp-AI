@@ -264,7 +264,7 @@ SuperHack-Optimsp-AI-1/
 
 ## 🏅 **Awards & Recognition**
 
-*Built for AWS GenAI Hackathon 2024*
+*Built for AWS GenAI Hackathon 2025*
 
 **Target Categories:**
 - 🥇 **Best Use of Amazon Bedrock**
@@ -275,10 +275,8 @@ SuperHack-Optimsp-AI-1/
 
 ## 👥 **Team & Contact**
 
-**Project Lead**: [Your Name]  
-**Email**: [your.email@domain.com]  
-**LinkedIn**: [Your LinkedIn Profile]  
-**GitHub**: [Your GitHub Profile]  
+**Project Lead**: Krishna Tripathi  
+**Email**: krishnatripathi07042005@gmail.com 
 
 ---
 
