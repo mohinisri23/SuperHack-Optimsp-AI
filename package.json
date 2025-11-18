@@ -9,7 +9,8 @@
     "build:dev": "vite build --mode development",
     "lint": "eslint .",
     "preview": "vite preview",
-    "start": "npm run dev"
+    "start": "npm run dev",
+    "type-check": "tsc --noEmit"
   },
   "dependencies": {
     "@aws-sdk/client-bedrock-runtime": "^3.916.0",

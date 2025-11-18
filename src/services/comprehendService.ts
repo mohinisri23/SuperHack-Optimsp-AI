@@ -1,7 +1,13 @@
 import { ComprehendClient, DetectSentimentCommand } from "@aws-sdk/client-comprehend";
 
+interface AWSCredentials {
+  accessKeyId: string;
+  secretAccessKey: string;
+  sessionToken?: string;
+}
+
 const createClient = () => {
-  const credentials: any = {
+  const credentials: AWSCredentials = {
     accessKeyId: import.meta.env.VITE_AWS_ACCESS_KEY_ID,
     secretAccessKey: import.meta.env.VITE_AWS_SECRET_ACCESS_KEY,
   };

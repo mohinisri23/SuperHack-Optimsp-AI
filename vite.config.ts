@@ -6,7 +6,7 @@ import path from "path";
 export default defineConfig({
   server: {
     host: "::",
-    port: 8080,
+    port: 5173,
   },
   plugins: [react()],
   resolve: {
@@ -14,4 +14,17 @@ export default defineConfig({
       "@": path.resolve(__dirname, "./src"),
     },
   },
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          vendor: ['react', 'react-dom'],
+          aws: ['@aws-sdk/client-bedrock-runtime', '@aws-sdk/client-comprehend'],
+          ui: ['@radix-ui/react-dialog', '@radix-ui/react-dropdown-menu', '@radix-ui/react-tabs'],
+          charts: ['recharts']
+        }
+      }
+    },
+    chunkSizeWarningLimit: 600
+  }
 });
