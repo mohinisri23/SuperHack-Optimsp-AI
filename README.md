@@ -269,6 +269,8 @@ SuperHack-Optimsp-AI-1/
 
 ## 🚀 **MVP Roadmap for Finals**
 
+*Built for AWS GenAI Hackathon 2025*
+
 ### **Phase 1: Data Integration (Week 1-2)**
 - **Real MSP Data Sources**
   - ConnectWise/Autotask API integration
@@ -356,10 +358,8 @@ SuperHack-Optimsp-AI-1/
 
 ## 👥 **Team & Contact**
 
-**Project Lead**: [Your Name]  
-**Email**: [your.email@domain.com]  
-**LinkedIn**: [Your LinkedIn Profile]  
-**GitHub**: [Your GitHub Profile]  
+**Project Lead**: Krishna Tripathi  
+**Email**: krishnatripathi07042005@gmail.com 
 
 ---
 
