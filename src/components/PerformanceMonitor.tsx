@@ -189,19 +189,8 @@ export function PerformanceMonitor() {
                 </Button>
               </div>
               
-              <div className="flex gap-1 sm:gap-2 flex-wrap">
-                {['Revenue insights', 'Cost optimization', 'Performance tips'].map((suggestion) => (
-                  <Button
-                    key={suggestion}
-                    variant="outline"
-                    size="sm"
-                    onClick={() => setChatMessage(suggestion)}
-                    className="text-xs sm:text-sm border-primary/30 hover:bg-primary/10 transition-all duration-200 hover:scale-105 px-2 sm:px-3"
-                  >
-                    <span className="hidden sm:inline">{suggestion}</span>
-                    <span className="sm:hidden">{suggestion.split(' ')[0]}</span>
-                  </Button>
-                ))}
+              <div className="text-xs text-muted-foreground bg-muted/30 p-2 rounded border">
+                💡 <strong>Ask me about:</strong> Revenue growth, cost optimization, client retention, team performance, security services, market analysis, automation opportunities, or any MSP business question
               </div>
             </div>
           </CardContent>

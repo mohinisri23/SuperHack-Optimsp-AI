@@ -27,17 +27,33 @@ export const generateAIResponse = async (message: string): Promise<string> => {
     console.log('🚀 Calling AWS Bedrock with message:', message);
     
     const client = createClient();
-    const prompt = `You are an AI assistant for MSP business analytics. Answer this question about business metrics: ${message}`;
+    
+    // Enhanced MSP-specific prompt with business context
+    const prompt = `You are an expert AI consultant for Managed Service Providers (MSPs). 
+
+Business Context:
+- Current Revenue: $2.3M annually
+- Active Clients: 157
+- Client Retention Rate: 94.5%
+- Profit Margin: 23%
+- Average Client Value: $14.6K
+- Services: Managed IT, Cloud Services, Security, Backup & Recovery
+- Team Departments: Engineering, Sales, Support, Operations
+
+User Question: ${message}
+
+Provide actionable, data-driven insights specific to MSP business operations. Include specific numbers, recommendations, and next steps where relevant. Format your response with clear sections and bullet points for readability.`;
     
     const command = new InvokeModelCommand({
-      modelId: "amazon.titan-tg1-large",
+      modelId: "amazon.titan-text-lite-v1",
       contentType: "application/json",
       accept: "application/json",
       body: JSON.stringify({
         inputText: prompt,
         textGenerationConfig: {
-          maxTokenCount: 300,
-          temperature: 0.7
+          maxTokenCount: 500,
+          temperature: 0.3,
+          topP: 0.9
         }
       }),
     });
@@ -45,7 +61,7 @@ export const generateAIResponse = async (message: string): Promise<string> => {
     const response = await client.send(command);
     console.log('✅ AWS Bedrock response received');
     const result = JSON.parse(new TextDecoder().decode(response.body));
-    return result.results[0].outputText;
+    return result.results[0].outputText.trim();
   } catch (error) {
     console.error('❌ Bedrock error:', error);
     if (error.name === 'ExpiredTokenException') {
